@@ -1,30 +1,18 @@
 using greenapi;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-var builder = WebApplication.CreateBuilder(args);
+var host = new HostBuilder()
+    .ConfigureFunctionsWorkerDefaults(ConfigureServices)
+    .Build();
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddHttpClient();
-
-builder.Services.AddSingleton<ISolarCalcClient, SolarCalcClient>();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+void ConfigureServices(IFunctionsWorkerApplicationBuilder builder)
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var services = builder.Services;
+    //services.AddHttpClient();
+    //services.AddSingleton<ISolarCalcClient, SolarCalcClient>();
+    services.AddHttpClient<ISolarCalcClient, SolarCalcClient>();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+host.Run();

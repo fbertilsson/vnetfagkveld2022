@@ -7,5 +7,5 @@ public interface ISolarCalcClient
     /// </summary>
     /// <param name="streetAddress"></param>
     /// <returns></returns>
-    Task<int> Calculate(string streetAddress);
+    Task<SolarCalcDto> Calculate(string streetAddress);
 }

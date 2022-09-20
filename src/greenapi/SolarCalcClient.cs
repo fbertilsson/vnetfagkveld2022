@@ -1,4 +1,7 @@
-﻿namespace greenapi;
+﻿using Microsoft.Extensions.Configuration;
+using System.Net.Http.Json;
+
+namespace greenapi;
 
 public class SolarCalcClient : ISolarCalcClient
 {
@@ -11,7 +14,7 @@ public class SolarCalcClient : ISolarCalcClient
         _config = config;
     }
 
-    public async Task<int> Calculate(string streetAddress)
+    public async Task<SolarCalcDto> Calculate(string streetAddress)
     {
         var baseUri = _config["SolarCalcUri"];
         var uriBuilder = new UriBuilder(baseUri);
@@ -21,7 +24,7 @@ public class SolarCalcClient : ISolarCalcClient
             var dto = await _httpClient.GetFromJsonAsync<SolarCalcDto>(uriBuilder.ToString());
             if (dto == null) throw new Exception("Could not deserialize dto");
 
-            return dto.MegaWattPeak;
+            return dto;
         }
         catch (Exception e) 
         {
