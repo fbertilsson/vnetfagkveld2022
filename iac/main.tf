@@ -167,6 +167,7 @@ resource "azurerm_function_app" "greenapi" {
   https_only                 = true
   storage_account_name       = azurerm_storage_account.this.name
   storage_account_access_key = azurerm_storage_account.this.primary_access_key
+  enable_builtin_logging     = false
 
   identity {
     type = "SystemAssigned"
@@ -179,6 +180,7 @@ resource "azurerm_function_app" "greenapi" {
   }
 
   site_config {
+    dotnet_framework_version         = "v6.0"
     scm_type        = "VSTSRM"
     ftps_state      = "FtpsOnly"
     app_scale_limit = 1
@@ -186,7 +188,7 @@ resource "azurerm_function_app" "greenapi" {
   lifecycle {
     ignore_changes = [
       tags,
-      app_settings["WEBSITE_RUN_FROM_PACKAGE"],
+      app_settings,
     ]
   }
 }
@@ -205,6 +207,7 @@ resource "azurerm_function_app" "solarcalc" {
   https_only                 = true
   storage_account_name       = azurerm_storage_account.this.name
   storage_account_access_key = azurerm_storage_account.this.primary_access_key
+  enable_builtin_logging     = false
 
   identity {
     type = "SystemAssigned"
@@ -217,6 +220,7 @@ resource "azurerm_function_app" "solarcalc" {
   }
 
   site_config {
+    dotnet_framework_version         = "v6.0"
     scm_type        = "VSTSRM"
     ftps_state      = "FtpsOnly"
     app_scale_limit = 1
@@ -224,7 +228,7 @@ resource "azurerm_function_app" "solarcalc" {
   lifecycle {
     ignore_changes = [
       tags,
-      app_settings["WEBSITE_RUN_FROM_PACKAGE"],
+      app_settings,
     ]
   }
 }
