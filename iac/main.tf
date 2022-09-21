@@ -227,24 +227,3 @@ resource "azurerm_function_app" "solarcalc" {
     ]
   }
 }
-
-resource "azurerm_private_endpoint" "solarcalc" {
-  name                = "pe-${local.product}-solarcalc-${local.env}"
-  location            = azurerm_resource_group.this.location
-  resource_group_name = azurerm_resource_group.this.name
-  subnet_id           = azurerm_subnet.inbound.id
-  private_dns_zone_group {
-    name                 = "privatednszonegroup"
-    private_dns_zone_ids = [azurerm_private_dns_zone.this.id]
-  }
-  private_service_connection {
-    name                           = "privateendpointconnection"
-    private_connection_resource_id = azurerm_function_app.solarcalc.id
-    subresource_names              = ["sites"]
-    is_manual_connection           = false
-  }
-  tags = local.default_tags
-  lifecycle {
-    ignore_changes = [tags]
-  }
-}
