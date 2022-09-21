@@ -193,11 +193,6 @@ resource "azurerm_function_app" "greenapi" {
   }
 }
 
-resource "azurerm_app_service_virtual_network_swift_connection" "greenapi_vnet_integration" {
-  app_service_id = azurerm_function_app.greenapi.id
-  subnet_id      = azurerm_subnet.outbound.id
-}
-
 resource "azurerm_function_app" "solarcalc" {
   name                       = "func-solarcalc-${local.env}"
   location                   = azurerm_resource_group.this.location
